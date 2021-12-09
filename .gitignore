@@ -6,6 +6,8 @@
 .pnp.js
 /api/.venv/lib
 /api/weights
+api/__pycache__
+/api/.ipynb_checkpoints
 
 # testing
 /coverage
