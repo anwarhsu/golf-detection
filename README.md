@@ -90,7 +90,7 @@ npm start
     In the above block, the first command activates the environment and the second command will start the frontend of the web on localhost:3000.
 3. Open a new terminal as the screenshot below: 
 
-![new terminal](doc/images/NewTerm.jpg)
+![new terminal](doc/images/newTerm.jpg)
 
 Make sure that this terminal is also running in the environment for the project; if not run `..\golf_detect\Script\activate.bat`, then run the backend by typing:
 
