@@ -4,7 +4,8 @@ import sys
 
 import cv2
 import matplotlib.pyplot as plt
-
+import os 
+from glob import glob
 from utils import *
 from darknet import Darknet
 
@@ -64,6 +65,9 @@ m.print_network()
 plt.rcParams['figure.figsize'] = [24.0, 14.0]
 
 # Load the image
+store_path = './instance/htmlfi'
+files = glob(store_path+'/*.jpg')
+assert len(files)==1, 'Number of images found in database is abnormal. Please restart the process'
 img = cv2.imread('./instance/htmlfi/golf.JPG')
 
 # Convert the image to RGB
@@ -152,12 +156,19 @@ t = plot_boxes(original_image, boxes, class_names, plot_labels = False)
 
 # In[20]:
 # a_file = open("./instance/box.txt", "w")
-torch.save(boxes, './instance/box.pt')
 
+num = 1 
+if(os.path.exists("./instance/box1.pt")):
+    if(os.path.exists("./instance/box2.pt")):
+        assert False, "Two text files already exist, please delete box1.txt and box2.txt and restart"
+    else:
+        num = 2
+out_filename = "./instance/box%d"%num
 
+torch.save(boxes, out_filename+".pt")
 
-with open("./instance/box.txt", "w") as file_object:
-
+out_txtfile = out_filename+".txt"
+with open(out_txtfile, "w") as file_object:
     for i in boxes:
         line =""
         count = 0
@@ -168,7 +179,7 @@ with open("./instance/box.txt", "w") as file_object:
             line = line + str(x.item()) + " "
             count += 1
         line += "\n"
-        print(line )
+        print(line)
         file_object.write(line)
 # for i in boxes:
 #   print(i)

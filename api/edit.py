@@ -4,7 +4,7 @@ import sys
 
 import cv2
 import matplotlib.pyplot as plt
-
+from glob import glob 
 from utils import *
 from darknet import Darknet
 
@@ -144,7 +144,10 @@ nms_thresh = 0.6
 # boxes = detect_objects(m, resized_image, iou_thresh, nms_thresh)
 
 # Print the objects found and the confidence level
-path = './instance/box.pt'
+pts = glob('./instance/*.pt')
+num_pts = len(pts)
+curr_pt_name = './instance/box%d'%num_pts
+path = curr_pt_name+".pt"
 boxes = torch.load(path)
 print_objects(boxes, class_names)
 
@@ -154,9 +157,9 @@ t = plot_boxes(original_image, boxes, class_names, plot_labels = False)
 
 # In[20]:
 # a_file = open("./instance/box.txt", "w")
-torch.save(boxes, './instance/box.pt')
+torch.save(boxes, path)
 
-with open("./instance/box.txt", "w") as file_object:
+with open(curr_pt_name+".txt", "w") as file_object:
 
     for i in boxes:
         line =""

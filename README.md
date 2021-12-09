@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# Callaway Golf Green Measurement System Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation Guide
 
-## Available Scripts
+### Requirements
+* Visual Studio Code (VS Code): https://code.visualstudio.com/
+* git: https://git-scm.com/downloads
+* Node.js: https://nodejs.org/en/ 
 
-In the project directory, you can run:
+### Build Project 
 
-### `yarn start`
+1. Open terminal (from command prompt or within VS Code), navigate to the folder where the project will be built by ```cd $ROOT ```, replace ```ROOT``` with the folder path.
+2. Type the following command to see if the requirements are met. 
+```bash 
+npm
+git
+```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you see outputs like this then you have the requirements satisfied. 
+```
+C:\Users\Gaopo>npm
+npm <command>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Usage:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+npm install        install all the dependencies in your project
+npm install <foo>  add the <foo> dependency to your project
+npm test           run this project's tests
+npm run <foo>      run the script named <foo>
+npm <command> -h   quick help on <command>
+npm -l             display usage info for all commands
+npm help <term>    search for help on <term> (in a browser)
+npm help npm       more involved overview (in a browser)
 
-### `yarn test`
+C:\Users\Gaopo>git
+usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Run following command:
 
-### `yarn build`
+```bash
+git clone https://github.com/anwarhsu/golf-detection.git
+cd golf-detection
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; These commands will have all the codes installed and ready to run.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Make a virtual environment, then activate the virtual environment 
+    ```bash
+    python -m venv golf_detect
+    golf_detect\Script\activate.bat
+    ```
+    If you did it correctly, you should see the environment before the command line, like: 
+    ```bash 
+    (golf_detect) C:\Users\Gaopo>
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. Backend requirements: 
 
-### `yarn eject`
+    4.1 Navigate to /api folder
+    ```bash
+    cd api
+    ```
+    4.2 Download the weights used for YOLOv3 model: [google drive link](https://drive.google.com/file/d/1B519piHVWGLYfzDS1By_8OI9UzCFqtvy/view?usp=sharing) and move the file to a /weights folder. You can run the following command, then drag the **test.weights** file to the /weights folder
+    ```bash 
+    mkdir weights
+    ```
+    4.3 Install all packages needed by 
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Open the "golf-detection" folder in VS Code 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+ ![open folder](doc/images/OpenFolder.jpg)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+2. In terminal, run the frontend by typing: 
+    ```bash
+    ..\golf_detect\Script\activate.bat
+    npm start
+    ```
+    In the above block, the first command activates the environment and the second command will start the frontend of the web on localhost:3000.
+3. Open a new terminal as the screenshot below: 
 
-## Learn More
+![new terminal](doc/images/NewTerm.jpg)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Make sure that this terminal is also running in the environment for the project; if not run `..\golf_detect\Script\activate.bat`, then run the backend by typing:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    ```bash
+    cd api && python app.py
+    ```
 
-### Code Splitting
+Now the website is up and we can start testing different ball configuration.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+4. Upload 1st image in jpg format, then click **submit**, then go back to **localhost:3000** and refresh the page 
+5. Click **YOLO DETECT**, wait about 5~10 seconds for program to run, and refresh the page, now you should see the prediction image when scrolling down
+6. If the flag is not detected, manually drag the bounding box for the flag by:
 
-### Analyzing the Bundle Size
+    6.1.  In the original image (top image), first click what will be the top left of the box and then click the bottom left of the box.  In the algorithm, the bottom line of the box is creating the location of the hole in the y-axis.  The x-axis of the hole is the midpoint of the bottom line.  If you mis-click, just refresh and drag the bounding box again. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    6.2. Click **EDIT**, wait about 5~10 seconds for program to run, and refresh the page to see the result on the prediction image.
+7.  If any wrong detections are made, go to the file explorer tree, find folder `api/instance/` and edit the file `box1.txt` or `box2.txt` depending on which angle of the image is. You need to delete the row of the wrong object detected. To decide which row represents the bounding box to the misclassified object, the first two columns represent the x,y coordinates of the bounding box in the image relative to the image width and height.
 
-### Making a Progressive Web App
+8. Repeat step 4-7 for 2nd image.
+9. Click **distance calc** to obtain a graph representation of the representation. A raw text output is also generated in the terminal: 
+![text output](doc/images/sampleOutput.jpg)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    Note that these text outputs are also stored as csv files in `api/instance/` folder. You can move or store them elsewhere easily. 
+![output file](doc/images/outputFile.jpg)
 
-### Advanced Configuration
+10. In one session, you can keep repeating step 4~9 for each trial. When you are done, you can exit the environment by typing `deactivate` or directly close the terminal.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Other Resources
 
-### Deployment
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). More commands with React App can be found [Here](./doc/ReactApp.md)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+
+
+
+
+
+

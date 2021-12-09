@@ -7,6 +7,7 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import torch
 from utils import *
+from glob import glob
 
 
 
@@ -38,7 +39,13 @@ def fileUpload():
   print("POST")
   f = request.files['file']
   print(f)
+  store_path = os.path.join(app.instance_path,'htmlfi')
+  files = glob(os.path.join(store_path,'*.jpg'))
+  for file in files:
+    os.remove(file)
   f.save(os.path.join(app.instance_path, 'htmlfi', secure_filename(f.filename)))
+  files = glob(os.path.join(store_path,'*.jpg'))
+  os.rename(files[0],store_path+"/golf.jpg")
 
   # uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file))
 
@@ -65,12 +72,15 @@ def editData():
   width = torch.tensor(width)
   hieght = torch.tensor(hieght)
 
-  path = './instance/box.pt'
+  pts = glob('./instance/*.pt')
+  num_pts = len(pts)
+  curr_pt_name = './instance/box%d'%num_pts
+  path = curr_pt_name+".pt"
   model = torch.load(path)
 
   new_box = [x,y,width,hieght,torch.tensor(1.0000),torch.tensor(1.0000),torch.tensor(0)]
   model.append(new_box)
-  torch.save(model, './instance/box.pt')
+  torch.save(model, path)
   print("EDIT")
   os.system('python edit.py')
   
@@ -96,9 +106,25 @@ def yolo():
 
 @app.route('/distance', methods=['get'])
 def distance():
+  txtfile1 = "./instance/box1.txt"
+  txtfile2 = "./instance/box2.txt"
   print("distance")
-  os.system('python distance.py')
+  pred_files = glob('./instance/*.txt')
 
+  if(len(pred_files)==2 and os.path.exists(txtfile1) and os.path.exists(txtfile2)):
+    for file in glob("./instance/*.csv"):
+      if(os.path.isfile(file)):
+        os.remove(file)
+    os.system('python distance.py')
+    for file in glob("./instance/*.pt"):
+      if(os.path.isfile(file)):
+        os.remove(file)
+    os.remove(txtfile1)
+    os.remove(txtfile2)
+  else:
+    error_message = {0:"No prediction text files generated. Please input two images",\
+                     1: "Only 1 prediction text files generated. Please input image from the second angle"}
+    assert False, error_message[len(pred_files)]
 
   return {
     'userID' : 2,
