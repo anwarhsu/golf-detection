@@ -213,7 +213,7 @@ def displayLocations(data):
     plt.xlabel('X Distance from Hole (ft)')
     plt.ylabel('Y Distance from Hole (ft)')
     plt.title('Calculated Location of Golf Balls');
-    plt.savefig('out.jpg')
+    plt.savefig('./instance/htmlfi/golf_YOLO_distance.jpg')
 
     #end of function
 # In[14]:
@@ -303,15 +303,16 @@ if __name__ == "__main__":
 
     # # Functions 2
 
-    for num, pt in enumerate(rawDistData1):
-        plt.scatter(pt[0], pt[1], color = 'red')
-        plt.scatter(rotReordData[num][0], rotReordData[num][1], color = 'blue')
-        #plt.scatter(realData[num][0], realData[num][1], color = 'black')
-        plt.scatter(avgdData[num][0], avgdData[num][1], color = 'green', marker = 'x')
-    plt.axhline(0,color='k', alpha = 0.2) # x = 0
-    plt.axvline(0,color='k', alpha = 0.2) # y = 0
-    plt.title('Golf balls: red=angle1, blue=angle2, green=prediction');
-    plt.savefig('./instance/htmlfi/golf_YOLO_distance.jpg')
+    # for num, pt in enumerate(rawDistData1):
+    #     plt.scatter(pt[0], pt[1], color = 'red')
+    #     plt.scatter(rotReordData[num][0], rotReordData[num][1], color = 'blue')
+    #     #plt.scatter(realData[num][0], realData[num][1], color = 'black')
+    #     plt.scatter(avgdData[num][0], avgdData[num][1], color = 'green', marker = 'x')
+    # plt.axhline(0,color='k', alpha = 0.2) # x = 0
+    # plt.axvline(0,color='k', alpha = 0.2) # y = 0
+    # plt.title('Golf balls: red=angle1, blue=angle2, green=prediction');
+    # plt.savefig('./instance/htmlfi/full_output.jpg')
+    
     displayLocations(avgdData)
     df = pd.DataFrame(avgdData, columns = ['x', 'y'])
     df['dist'] = np.sqrt(df['x'] ** 2 + df['y'] ** 2)
@@ -324,7 +325,7 @@ if __name__ == "__main__":
             getStats(df['dist']).T
                     ]).T
     extra = extra.rename(index = {0: 'Average', 1: 'Max', 2: 'Min', 3: 'Median', 4: 'Std dev'})
-
+    print("\nDistance calculation output:\n")
     print(df)
     print(extra)
     df.to_csv('./instance/stats.csv')

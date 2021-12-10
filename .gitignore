@@ -6,8 +6,11 @@
 .pnp.js
 /api/.venv/lib
 /api/weights
-/api/__pycache__/*
+__pycache__/
+*.pyc 
 /api/.ipynb_checkpoints
+/api/instance/htmlfi/*
+/api/instance/*.csv
 
 # testing
 /coverage

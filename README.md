@@ -54,7 +54,7 @@ npm start
 3. Make a virtual environment, then activate the virtual environment 
     ```bash
     python -m venv golf_detect
-    golf_detect\Script\activate.bat
+    golf_detect\Scripts\activate.bat
     ```
     If you did it correctly, you should see the environment before the command line, like: 
     ```bash 
@@ -84,7 +84,7 @@ npm start
 
 2. In terminal, run the frontend by typing: 
     ```bash
-    ..\golf_detect\Script\activate.bat
+    ..\golf_detect\Scripts\activate.bat
     npm start
     ```
     In the above block, the first command activates the environment and the second command will start the frontend of the web on localhost:3000.
@@ -92,13 +92,13 @@ npm start
 
 ![new terminal](doc/images/newTerm.jpg)
 
-Make sure that this terminal is also running in the environment for the project; if not run `..\golf_detect\Script\activate.bat`, then run the backend by typing:
+Make sure that this terminal is also running in the environment for the project; if not run `..\golf_detect\Scripts\activate.bat`, then run the backend by typing:
 
-    ```bash
-    cd api && python app.py
-    ```
+```bash
+cd api && python app.py
+```
 
-Now the website is up and we can start testing different ball configuration.
+Now the website is up and we can start testing different ball configuration. Here it's recommended to split your screen to view both the websites and the VS code terminal simultaneously, so you can see outputs from the terminal.
 
 4. Upload 1st image in jpg format, then click **submit**, then go back to **localhost:3000** and refresh the page 
 5. Click **YOLO DETECT**, wait about 5~10 seconds for program to run, and refresh the page, now you should see the prediction image when scrolling down
@@ -110,13 +110,18 @@ Now the website is up and we can start testing different ball configuration.
 7.  If any wrong detections are made, go to the file explorer tree, find folder `api/instance/` and edit the file `box1.txt` or `box2.txt` depending on which angle of the image is. You need to delete the row of the wrong object detected. To decide which row represents the bounding box to the misclassified object, the first two columns represent the x,y coordinates of the bounding box in the image relative to the image width and height.
 
 8. Repeat step 4-7 for 2nd image.
-9. Click **distance calc** to obtain a graph representation of the representation. A raw text output is also generated in the terminal: 
-![text output](doc/images/sampleOutput.jpg)
+9. Click **distance calc** to obtain a graph representation of the representation. Refresh the page and scroll down to see the visualization like the following:
+![visualization](doc/images/visual.jpg)
+
+    A raw text output is also generated in the terminal: 
+    ![text output](doc/images/sampleOutput.jpg)
 
     Note that these text outputs are also stored as csv files in `api/instance/` folder. You can move or store them elsewhere easily. 
 ![output file](doc/images/outputFile.jpg)
 
-10. In one session, you can keep repeating step 4~9 for each trial. When you are done, you can exit the environment by typing `deactivate` or directly close the terminal.
+    9.1 If you want to change the weights of two images's impact on x-y axis coordinate, go to file `api/distance.py` and change the line 291 ```mainProp``` to the weight of the first image you want it to be (default:0.61)
+
+10. In one session, you can keep repeating step 4~9 for each trial of diffrent ball configurations. When you are done, you can exit the environment by typing `deactivate` or directly close the terminal.
 
 # Other Resources
 
